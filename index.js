@@ -1,6 +1,18 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 
+const Department = require('./lib/newDepartment');
+const Employee = require('./lib/newEmployee');
+const Role = require('./lib/newRole');
+const db = require('./lib/DB');
+const { response } = require('express');
+const { send } = require('process');
+require('console.table');
+
+
+let prompt = () => {
+    
+}
 inquirer.prompt([
     {
         type: 'list',
@@ -8,57 +20,96 @@ inquirer.prompt([
         name: 'task',
         choices:    [
                     'View all Departments', 'view all roles', 'view all employess',
-                    'add a department', 'add a role', 'add an employee', 'update an employee role'
+                    'Add a department', 'Create a role', 'Add an employee', 'Update an employee role'
                     ]
 
-    }, {
-
-        // if new department 
-        type: 'input',
-        message: 'What is the department name you want to add',
-        name: 'newDepartment'
-    }, {
-
-        // if new employee
-        type: 'input',
-        message: 'New employee first name: ',
-        name: 'newFirstName'
-    }, {
-        type: 'input', 
-        message: "New employee last name: ",
-        name: 'newLastName'
-    }, {
-        type: 'input',
-        message: 'New employee role id: ',
-        name: "newEmployeeId"
-
-
-
-
-        // if new role is selected: 
-    }, {
-        type: 'input',
-        message: 'New role title: ',
-        name: 'newRole'
-    }, {
-        type: 'input',
-        message: 'New role Salary: ', 
-        name: 'newSalary'
-    }, {
-        type: 'input', 
-        message: "New role's department id: ",
-        name: 'newDepartmentId'
     }, 
+    
 ]).then((results) => {
-    // if (results.task === 'View all Departments') {
-    //     joinTables = "SELECT * FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id;"
-    //     fs.writeFile('userInput.txt', joinTables, (err) => {
-    //         if (err) {
-    //             console.error(err);
-    //             return;
-    //         }
-    //         console.log('input file created')
-    //     })
-    // }
-    console.log(results)
+    
+    if(results.task === 'Add an employee') {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: 'New employee first name: ',
+                name: 'newFirstName'
+            }, {
+                type: 'input', 
+                message: "New employee last name: ",
+                name: 'newLastName'
+            }, {
+                type: 'input',
+                message: 'New employee role id: ',
+                name: "newEmployeeId"
+            }
+        ]).then((employeeInfo) => {
+            let newFirstName = employeeInfo.newFirstName;
+            let newLastName = employeeInfo.newLastName;
+            let newEmployeeId = employeeInfo.newEmployeeId;
+
+            db.createEmployeeQuery(newFirstName, newLastName, newEmployeeId);
+            // .then( // display the prompt )
+        });
+    
+    }
+
+    if (results.task === "Add a department") {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: 'What is the department name you want to add',
+                name: 'newDepartment'
+            }
+        
+        ]).then((departmentInfo) => {
+            let newDepartment = departmentInfo.newDepartment;
+            db.createDepartment(newDepartment)
+        })
+    }
+
+    if (results.task === "Create a role") {
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: 'New role title: ',
+                name: 'newRole'
+            }, {
+                type: 'input',
+                message: 'New role Salary: ', 
+                name: 'newSalary'
+            }, {
+                type: 'input', 
+                message: "New role's department id: ",
+                name: 'newDepartmentId'
+            }, 
+        ]).then((roleInfo) => {
+            let newRole = roleInfo.newRole;
+            let newSalary = roleInfo.newSalary;
+            let newDepartmentId = roleInfo.newDepartmentId;
+
+            db.createRole(newRole, newSalary, newDepartmentId);
+        })
+    }
+
+    if (results.task === "View all Departments"){
+        db.displayDepartments().then(([rows]) => {
+            console.table(rows);
+        })
+    }
+
+    if (results.task === "view all roles") {
+        db.displayRoles().then(([rows]) => {
+            console.table(rows);
+        })
+    }
+
+    if (results.task === "view all employess") {
+        db.displayEmployees().then(([rows]) => {
+            console.table(rows);
+        })
+    }
+
+    if (results.task === "Update an employee role") {
+        console.log("SOON");
+    }
 });
