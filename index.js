@@ -18,7 +18,7 @@ let rePront = () => {
             name: 'task',
             choices:    [
                         'View all Departments', 'view all roles', 'view all employess',
-                        'Add a department', 'Create a role', 'Add an employee', 'Update an employee role'
+                        'Add a department', 'Create a role', 'Add an employee', 'Update an employee role', "Quit"
                         ]
     
         }, 
@@ -106,7 +106,34 @@ let rePront = () => {
         }
     
         if (results.task === "Update an employee role") {
-            console.log("SOON");
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    message: "Employee's first name:",
+                    name: 'employeeFirst'
+                }, {
+                    type: 'input',
+                    message: "Employee's last name: ", 
+                    name: 'employeeLast'
+                }, {
+                    type: 'input', 
+                    message: "Update the employee's role to: ",
+                    name: 'updatedRole'
+                }, 
+            ])
+                .then((updateE) => {
+                     employeeFirst = updateE.employeeFirst;
+                     employeeLast = updateE.employeeLast;
+                     updatedRole = updateE.updatedRole;
+
+                    db.updateEmployee(updatedRole, employeeFirst, employeeLast).then(([rows]) => {
+                        console.table(rows);
+                    }).then(rePront());
+                })
+        }
+
+        if(results.task === "Quit") {
+            return;
         }
     })
 }
