@@ -44,7 +44,6 @@ let rePront = () => {
                 let newEmployeeId = employeeInfo.newEmployeeId;
     
                 db.createEmployeeQuery(newFirstName, newLastName, newEmployeeId).then(rePront());
-                // .then( // display the prompt )
             });
         
         }
