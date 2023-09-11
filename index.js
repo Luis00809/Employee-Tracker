@@ -17,7 +17,7 @@ let rePront = () => {
             message: "What would you like to do?",
             name: 'task',
             choices:    [
-                        'View all Departments', 'view all roles', 'view all employess',
+                        'View all Departments', 'view all roles', 'View all employees',
                         'Add a department', 'Create a role', 'Add an employee', 'Update an employee role', "Quit"
                         ]
     
@@ -98,7 +98,7 @@ let rePront = () => {
             }).then(rePront());
         }
     
-        if (results.task === "view all employess") {
+        if (results.task === "View all employees") {
             db.displayEmployees().then(([rows]) => {
                 console.table(rows);
             }).then(rePront());
@@ -124,6 +124,9 @@ let rePront = () => {
                      employeeFirst = updateE.employeeFirst;
                      employeeLast = updateE.employeeLast;
                      updatedRole = updateE.updatedRole;
+                     console.log(employeeFirst);
+                     console.log(employeeLast);
+                     console.log(updatedRole);
 
                     db.updateEmployee(updatedRole, employeeFirst, employeeLast).then(([rows]) => {
                         console.table(rows);

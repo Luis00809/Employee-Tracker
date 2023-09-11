@@ -23,7 +23,8 @@
    
   A user can use this application by running noce index.js and then the user will be presented with prompts. There, the user can choose to look at data that is stored in the database or to create new roles, departments, or add an employee. 
    
-  
+  Here is a walkthorugh of using this application: 
+  https://drive.google.com/file/d/1mGDZ7IQ_3-JgLGPEn3ZHySusegV8-y8v/view 
 
 Here is what the application should display when the user runs node index.js:    
 ![Diaplay of prompts](./assets/images/Screenshot%202023-09-08%20at%206.57.35%20PM.png)
