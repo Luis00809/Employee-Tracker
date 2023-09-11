@@ -23,7 +23,7 @@ CREATE TABLE employee (
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    role_id INT,
+    role_id INT NOT null,
     manager_id INT,
     FOREIGN KEY (role_id) references role(id)ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id)
